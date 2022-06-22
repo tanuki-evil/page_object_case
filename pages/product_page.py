@@ -20,3 +20,11 @@ class ProductPage(BasePage):
             if item_strong.text == product_name:
                 names_equal = True
         assert names_equal, "Names of product isn't equal"
+
+    def should_not_be_success_message(self):
+        assert self.is_not_element_present(*ProductPageLocators.BASKET_STRONG_NAMES), \
+            "Success message is presented, but should not be"
+
+    def should_disappeared(self):
+        assert self.is_disappeared(*ProductPageLocators.BASKET_STRONG_NAMES), \
+            "Success message isn't disappeared"
