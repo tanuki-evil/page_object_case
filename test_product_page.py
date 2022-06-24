@@ -10,7 +10,7 @@ class TestUserAddToBasketFromProductPage:
     @pytest.fixture(scope="function", autouse=True)
     def setup(self, browser):
         link = 'https://selenium1py.pythonanywhere.com/ru/accounts/login/'
-        page = LoginPage(browser, link)
+        page = LoginPage(browser, link, timeout=4)
         page.open()
 
         email = str(time.time()) + "@fakemail.org"
@@ -19,6 +19,7 @@ class TestUserAddToBasketFromProductPage:
 
         page.should_be_authorized_user()
 
+    @pytest.mark.need_review
     def test_user_can_add_product_to_bucket(self, browser):
         link = f'https://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer1'
         product_page = ProductPage(browser, link)
@@ -35,8 +36,9 @@ class TestUserAddToBasketFromProductPage:
         product_page.should_not_be_success_message()
 
 
+@pytest.mark.need_review
 @pytest.mark.parametrize('num', [i if i != 7 else pytest.param(7, marks=pytest.mark.xfail) for i in range(10)])
-def test_user_can_add_product_to_bucket(browser, num):
+def test_guest_can_add_product_to_bucket(browser, num):
     link = f'https://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer{num}'
     product_page = ProductPage(browser, link)
     product_page.open()
@@ -78,6 +80,7 @@ def test_guest_should_see_login_link_on_product_page(browser):
     page.should_be_login_link()
 
 
+@pytest.mark.need_review
 def test_guest_can_go_to_login_page_from_product_page(browser):
     link = "https://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
     page = ProductPage(browser, link)
@@ -94,6 +97,7 @@ def test_guest_cant_see_product_in_basket_opened_from_main_page(browser):
     page.should_not_be_basket_empty_message()
 
 
+@pytest.mark.need_review
 def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
     link = "https://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
     page = BasketPage(browser, link)
